@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "c7070c3c-cb60-4ae9-98f3-b9995dbf676c",
+		"name": "Cephas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/cephas/healthcheck",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cephas",
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"begin_timestamp\": \"2020-11-26T17:00:00\",\r\n    \"end_timestamp\": \"2020-11-26T18:00:00\",\r\n    \"location\": {\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [-122.1053322270183, 48.00176580878628]\r\n    },\r\n    \"description\": \"Thanksgiving dinner at McDonald's!\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/cephas/api/v1.0/create-event",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cephas",
+						"api",
+						"v1.0",
+						"create-event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-event",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/cephas/api/v1.0/get-event/bab73ad2-251a-44f4-b84e-beff50631f5d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cephas",
+						"api",
+						"v1.0",
+						"get-event",
+						"bab73ad2-251a-44f4-b84e-beff50631f5d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-event",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"begin_timestamp\": \"2020-10-26T17:00:00\",\r\n    \"end_timestamp\": \"2020-10-26T18:00:00\",\r\n    \"location\": {\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n            -123.105332,\r\n            49.001766\r\n        ]\r\n    },\r\n    \"description\": \"Thanksgiving dinner at McDonald's!  Yummy.\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/cephas/api/v1.0/update-event/bab73ad2-251a-44f4-b84e-beff50631f5d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cephas",
+						"api",
+						"v1.0",
+						"update-event",
+						"bab73ad2-251a-44f4-b84e-beff50631f5d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-event",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/cephas/api/v1.0/delete-event/bab73ad2-251a-44f4-b84e-beff50631f5d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cephas",
+						"api",
+						"v1.0",
+						"delete-event",
+						"bab73ad2-251a-44f4-b84e-beff50631f5d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find: in-space-time",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"start_time\": \"2020-11-10T10:00:00\",\r\n    \"end_time\": \"2020-11-10T11:00:00\",\r\n    \"latituted\": 33.811299,\r\n    \"longitude\": -117.920814,\r\n    \"maxDistance\": 10\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/cephas/api/v1.0/find/in-space-time",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cephas",
+						"api",
+						"v1.0",
+						"find",
+						"in-space-time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find: in-time",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"start_time\": \"2020-11-10T10:00:00\",\r\n    \"end_time\": \"2020-11-10T11:00:00\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/cephas/api/v1.0/find/in-time",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cephas",
+						"api",
+						"v1.0",
+						"find",
+						"in-time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find: in-space",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"latituted\": 33.811299,\r\n    \"longitude\": -117.920814,\r\n    \"maxDistance\": 10\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/cephas/api/v1.0/find/in-space",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cephas",
+						"api",
+						"v1.0",
+						"find",
+						"in-space"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

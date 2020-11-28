@@ -1,0 +1,9 @@
+{
+    "begin_timestamp": "2020-11-28T13:10:00",
+    "end_timestamp": "2020-11-28T18:00:00",
+    "location": {
+        "type": "Point",
+        "coordinates": [-121.76028001150974, 46.852247918232365]
+    },
+    "description": "Test created event from the top of Mt. Ranier."
+}
