@@ -57,6 +57,7 @@ A day at Disneyland
 
 ## Create
 
+```
 db.www.insert(
     {
         "key": "abc123",
@@ -126,10 +127,11 @@ db.www.insert(
         "description": "Family vacation to Disneyland. Ellen and Josie went to New Orleans Square to wait for us."
     }
 )
+```
 
 ## Read
 
-db.www.find({"key": "abc123"}).pretty();
+`db.www.find({"key": "abc123"}).pretty();`
 
 ## Update
 The application supports updating of where, when and what data.
