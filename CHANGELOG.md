@@ -5,20 +5,21 @@
 
 ### Tasks
 
-- [] Implement full text search
-- [] Errors during persist operations should return dictionary with error message, not just error string
-- [] Search with no match should return dictionary with error message, not just error string
-- [] Externalize configuration (i.e. database name, collection name, db host/port)
-- [] Update documentation
+- [ ] Implement full text search
+- [ ] Errors during persist operations should return dictionary with error message, not just error string
+- [ ] Search with no match should return dictionary with error message, not just error string
+- [ ] Add verification to ensure be begin_timestamp actually comes before the end_timestamp
+- [ ] Externalize configuration (i.e. database name, collection name, db host/port)
+- [ ] Update documentation
 
 **Additional Testing**
 
-- [] Invalid methods
-- [] Missing content-type
-- [] Get deleted data
-- [] Error response format
-- [] Empty results format
-- [] Check UUID searches case insensitive
+- [ ] Invalid methods
+- [ ] Missing content-type
+- [ ] Get deleted data
+- [ ] Error response format
+- [ ] Empty results format
+- [ ] Check UUID searches case insensitive
 
 
 ### Added
