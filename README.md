@@ -36,6 +36,7 @@ Run with compose `docker-compose up`
 
 ## Container Environment
 
+- **CEPHAS_SERVER_LOGLEVEL**: Server logging output level (default DEBUG)
 - **CEPHAS_SERVER_LISTEN_HOST**: Hostname or IP where the service will bind too
 - **CEPHAS_SERVER_LISTEN_PORT**: Port number where the service will listen for requests
 - **CEPHAS_DB_NAME**: Name of the MongoDB database
@@ -44,6 +45,8 @@ Run with compose `docker-compose up`
 - **CEPHAS_DB_PORT**: Port number where the MongoDB is listening for connections
 - **CEPHAS_DB_USER**: Mongo client username
 - **CEPHAS_DB_PASS**: Mongo client password
+- **CEPHAS_DB_SOCKET_TIMEOUT_MS**: Mongo client socketTimeoutMS
+- **CEPHAS_DB_CONNECT_TIMEOUT_MS**: Mongo client connectTimeoutMS
 
 
 # When Where What

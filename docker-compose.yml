@@ -16,6 +16,7 @@ services:
     image: cephas:latest
     container_name: cephas
     environment:
+      CEPHAS_SERVER_LOGLEVEL: DEBUG
       CEPHAS_SERVER_LISTEN_HOST: '0.0.0.0'
       CEPHAS_DB_HOST: mongodb
       CEPHAS_DB_USER: root

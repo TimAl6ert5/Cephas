@@ -241,7 +241,7 @@ def handle_find_event_in_space_time():
 
 
 def connect_mongo(db, collection, mongo_host='localhost', mongo_port=27017, 
-                    mongo_user=None, mongo_pass=None):
+                    mongo_user=None, mongo_pass=None, socket_timeout=3000, connect_timeout=3000):
     global my_mongo_ctx
     my_mongo_cfg = MongoConfig(db, mongo_host, mongo_port, mongo_user, mongo_pass)
     my_mongo_ctx = MongoContext(my_mongo_cfg)
@@ -249,14 +249,17 @@ def connect_mongo(db, collection, mongo_host='localhost', mongo_port=27017,
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', 
+                        level=os.getenv('CEPHAS_SERVER_LOGLEVEL', 'DEBUG'))
     connect_mongo(
         os.getenv('CEPHAS_DB_NAME', 'space-time'),
         os.getenv('CEPHAS_DB_COLLECTION_NAME', 'www'),
         os.getenv('CEPHAS_DB_HOST', 'localhost'),
         int(os.getenv('CEPHAS_DB_PORT', '27017')),
         os.getenv('CEPHAS_DB_USER'),
-        os.getenv('CEPHAS_DB_PASS')
+        os.getenv('CEPHAS_DB_PASS'),
+        int(os.getenv('CEPHAS_DB_SOCKET_TIMEOUT_MS', '3000')),
+        int(os.getenv('CEPHAS_DB_CONNECT_TIMEOUT_MS', '3000'))
     )
     run(
         host=os.getenv('CEPHAS_SERVER_LISTEN_HOST', 'localhost'),

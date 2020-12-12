@@ -7,12 +7,13 @@ import datetime
 import logging
 from bson import json_util
 from pymongo import MongoClient
+from urllib.parse import quote_plus
 from . import domain
 
 
 my_mongo_ctx = None
 
-DEFAULT_PROJECT = {
+DEFAULT_PROJECTION = {
     "_id": 0,
     "key": 1,
     "begin_timestamp": 1,
@@ -27,15 +28,29 @@ class MongoConfig(object):
     collection.
     """
 
-    def __init__(self, db_name, host='localhost', port=27017, user=None, passwd=None):
+    def __init__(self, db_name, host='localhost', port=27017, user=None, 
+                    passwd=None, socket_timeout=3000, connect_timeout=3000):
         self.db_name = db_name
         self.host = host
         self.port = port
         self.user = user
         self.passwd = passwd
+        self.socket_timeout = socket_timeout
+        self.connect_timeout = connect_timeout
     
     def uses_auth(self):
         return self.user is not None and self.passwd is not None
+        
+    def __repr__(self):
+        return 'MongoConfig[db_name=%s,host=%s,port=%s,user=%s,passwd=%s,socket_timeout=%s,connect_timeout=%s]' % (
+            str(self.db_name),
+            str(self.host),
+            str(self.port),
+            str(self.user),
+            str(self.passwd),
+            str(self.socket_timeout),
+            str(self.connect_timeout)
+        )
 
 
 class MongoContext(object):
@@ -46,19 +61,25 @@ class MongoContext(object):
     
     def __init__(self, mongoconfig):
         self.mongoconfig = mongoconfig
+        logging.debug(repr(self.mongoconfig))
         if self.mongoconfig.uses_auth():
             logging.info("Connecting with auth")
-            self.connection = MongoClient('mongodb://%s:%s@%s:%s' % (
-                self.mongoconfig.user,
-                self.mongoconfig.passwd,
-                self.mongoconfig.host,
-                self.mongoconfig.port)
+            self.connection = MongoClient('mongodb://%s:%s@%s:%s/?socketTimeoutMS=%d&connectTimeoutMS=%d' % (
+                    quote_plus(self.mongoconfig.user),
+                    quote_plus(self.mongoconfig.passwd),
+                    quote_plus(self.mongoconfig.host),
+                    self.mongoconfig.port,
+                    self.mongoconfig.socket_timeout,
+                    self.mongoconfig.connect_timeout ),
             )
         else:
             logging.info("Connecting without auth")
-            self.connection = MongoClient(self.mongoconfig.host, self.mongoconfig.port)
+            self.connection = MongoClient(self.mongoconfig.host, self.mongoconfig.port,
+                socketTimeoutMS=self.mongoconfig.socket_timeout,
+                connectTimeoutMS=self.mongoconfig.connect_timeout)
         self.db = self.connection[self.mongoconfig.db_name]
         self.collection = None
+        logging.debug(repr(self.connection))
 
     def getDbs(self):
         try:
@@ -111,8 +132,8 @@ class MongoContext(object):
             return False
 
     def findRecord(self, query):
-        global DEFAULT_PROJECT
-        return self._findOne(query, DEFAULT_PROJECT)
+        global DEFAULT_PROJECTION
+        return self._findOne(query, DEFAULT_PROJECTION)
 
     def _findOne(self, query = None, projection = None):
         if query is not None:
@@ -130,7 +151,7 @@ class MongoContext(object):
             return "An error occurred during search"
 
     def findInTime(self, start_time, end_time):
-        global DEFAULT_PROJECT
+        global DEFAULT_PROJECTION
 
         my_query = {
             "begin_timestamp":{
@@ -139,10 +160,10 @@ class MongoContext(object):
             }
         }
         
-        return self._find(my_query, DEFAULT_PROJECT)
+        return self._find(my_query, DEFAULT_PROJECTION)
 
     def findInSpace(self, latituted, longitude, maxDistance):
-        global DEFAULT_PROJECT
+        global DEFAULT_PROJECTION
 
         my_query = {
             "location": {
@@ -159,10 +180,10 @@ class MongoContext(object):
             }
         }
 
-        return self._find(my_query, DEFAULT_PROJECT)
+        return self._find(my_query, DEFAULT_PROJECTION)
 
     def findInSpaceTime(self, start_time, end_time, latituted, longitude, maxDistance):
-        global DEFAULT_PROJECT
+        global DEFAULT_PROJECTION
 
         my_query = {
             "begin_timestamp":{
@@ -183,7 +204,7 @@ class MongoContext(object):
             }
         }
         
-        return self._find(my_query, DEFAULT_PROJECT)
+        return self._find(my_query, DEFAULT_PROJECTION)
 
     def _find(self, query = None, projection = None):
         if query is not None:
@@ -208,7 +229,7 @@ class MongoContext(object):
             return "An error occurred during search"
     
     def updateRecord(self, event_key, event_record):
-        global DEFAULT_PROJECT
+        global DEFAULT_PROJECTION
 
         if not event_record.valid:
             raise Exception("Invalid record")
@@ -228,7 +249,7 @@ class MongoContext(object):
             event_dict['description'] = event_record.description
         my_update = {"$set": event_dict}
 
-        return self._updateOne(my_query, my_update, DEFAULT_PROJECT)
+        return self._updateOne(my_query, my_update, DEFAULT_PROJECTION)
 
     def _updateOne(self, query, values, projection = None):
         if query is not None:

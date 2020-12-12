@@ -9,7 +9,6 @@
 - Search with no match should return dictionary with error message, not just error string
 - Add verification to ensure be begin_timestamp actually comes before the end_timestamp
 - Update documentation
-- Adjust mongo connection timeout
 
 **Additional Testing**
 
@@ -32,6 +31,8 @@
 - Containerization support
 - Application environment configuration
 - Support mongo client authentication
+- Configuration for mongo client connect and socket timeout
+- Configuration for log level
 
 ### Changed
 
