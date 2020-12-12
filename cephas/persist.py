@@ -27,10 +27,15 @@ class MongoConfig(object):
     collection.
     """
 
-    def __init__(self, db_name, host='localhost', port=27017):
+    def __init__(self, db_name, host='localhost', port=27017, user=None, passwd=None):
+        self.db_name = db_name
         self.host = host
         self.port = port
-        self.db_name = db_name
+        self.user = user
+        self.passwd = passwd
+    
+    def uses_auth(self):
+        return self.user is not None and self.passwd is not None
 
 
 class MongoContext(object):
@@ -41,8 +46,17 @@ class MongoContext(object):
     
     def __init__(self, mongoconfig):
         self.mongoconfig = mongoconfig
-        self.connection = MongoClient(
-            self.mongoconfig.host, self.mongoconfig.port)
+        if self.mongoconfig.uses_auth():
+            logging.info("Connecting with auth")
+            self.connection = MongoClient('mongodb://%s:%s@%s:%s' % (
+                self.mongoconfig.user,
+                self.mongoconfig.passwd,
+                self.mongoconfig.host,
+                self.mongoconfig.port)
+            )
+        else:
+            logging.info("Connecting without auth")
+            self.connection = MongoClient(self.mongoconfig.host, self.mongoconfig.port)
         self.db = self.connection[self.mongoconfig.db_name]
         self.collection = None
 

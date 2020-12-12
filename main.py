@@ -3,6 +3,7 @@
 # Instructor: Joe Conlan (j.conlan@snhu.edu)
 # Due Date: 2020-11-29
 
+import os
 import sys
 import logging
 import json
@@ -239,14 +240,27 @@ def handle_find_event_in_space_time():
         abort(500, e)
 
 
-def connect_mongo(db, collection):
+def connect_mongo(db, collection, mongo_host='localhost', mongo_port=27017, 
+                    mongo_user=None, mongo_pass=None):
     global my_mongo_ctx
-    my_mongo_cfg = MongoConfig(db)
+    my_mongo_cfg = MongoConfig(db, mongo_host, mongo_port, mongo_user, mongo_pass)
     my_mongo_ctx = MongoContext(my_mongo_cfg)
     my_mongo_ctx.useCollection(collection)
 
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', level=logging.DEBUG)
-    connect_mongo('space-time', 'www')
-    run(host='localhost', port=8080, debug=True, reloader=True)
+    connect_mongo(
+        os.getenv('CEPHAS_DB_NAME', 'space-time'),
+        os.getenv('CEPHAS_DB_COLLECTION_NAME', 'www'),
+        os.getenv('CEPHAS_DB_HOST', 'localhost'),
+        int(os.getenv('CEPHAS_DB_PORT', '27017')),
+        os.getenv('CEPHAS_DB_USER'),
+        os.getenv('CEPHAS_DB_PASS')
+    )
+    run(
+        host=os.getenv('CEPHAS_SERVER_LISTEN_HOST', 'localhost'),
+        port=int(os.getenv('CEPHAS_SERVER_LISTEN_PORT', '8080')),
+        debug=True,
+        reloader=True
+    )

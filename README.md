@@ -26,6 +26,26 @@ cd tests
 robot .\basic_crud.robot
 ```
 
+# Containerization
+
+Build the image `docker build -t cephas:latest .`
+
+Run the image `docker run -p 8080:8080 cephas:latest`
+
+Run with compose `docker-compose up`
+
+## Container Environment
+
+- **CEPHAS_SERVER_LISTEN_HOST**: Hostname or IP where the service will bind too
+- **CEPHAS_SERVER_LISTEN_PORT**: Port number where the service will listen for requests
+- **CEPHAS_DB_NAME**: Name of the MongoDB database
+- **CEPHAS_DB_COLLECTION_NAME**: Name of the MongoDB collection
+- **CEPHAS_DB_HOST**: Hostname where the MongoDB service is running
+- **CEPHAS_DB_PORT**: Port number where the MongoDB is listening for connections
+- **CEPHAS_DB_USER**: Mongo client username
+- **CEPHAS_DB_PASS**: Mongo client password
+
+
 # When Where What
 There are nuances to managing data with respect to time and space.
 Following are some notes to be converted into documentation details.
